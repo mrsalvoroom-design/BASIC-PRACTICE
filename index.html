@@ -6,7 +6,6 @@
     <title>SALVO GROUP - Grammar Mastery Test</title>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <style>
-        /* Gaya CSS Tetap Sama Seperti Aslinya */
         * {
             margin: 0;
             padding: 0;
@@ -29,157 +28,1129 @@
             width: 100%;
             max-width: 480px;
             min-height: 100vh;
-            background: rgba(255, 255, 255, 0.4);
-            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.98);
             position: relative;
+            overflow: hidden;
             display: flex;
             flex-direction: column;
-            box-shadow: 0 0 20px rgba(0,0,0,0.05);
         }
 
-        /* Bagian Password Screen Dihapus dari CSS untuk kebersihan */
-        .screen {
+        .header {
+            background: linear-gradient(135deg, #1e88e5 0%, #d32f2f 100%);
+            color: white;
+            padding: 20px 15px;
+            text-align: center;
+            position: relative;
+            z-index: 10;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.08'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            opacity: 0.3;
+        }
+
+        .logo-text {
+            font-size: 1.4em;
+            font-weight: 900;
+            letter-spacing: 1px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+            position: relative;
+            z-index: 1;
+            line-height: 1.2;
+        }
+
+        .sub-text {
+            font-size: 0.75em;
+            opacity: 0.95;
+            margin-top: 5px;
+            position: relative;
+            z-index: 1;
+            font-weight: 500;
+        }
+
+        .promo-banner {
+            background: linear-gradient(90deg, #ff6b6b 0%, #ee5a24 50%, #ff6b6b 100%);
+            background-size: 200% 100%;
+            color: white;
+            padding: 12px 10px;
+            text-align: center;
+            font-weight: 700;
+            font-size: 0.85em;
+            position: relative;
+            overflow: hidden;
+            animation: shimmer 3s infinite;
+            z-index: 10;
+        }
+
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+
+        .promo-banner::before,
+        .promo-banner::after {
+            content: '🔥';
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.2em;
+            animation: pulse 1.5s infinite;
+        }
+
+        .promo-banner::before { left: 10px; }
+        .promo-banner::after { right: 10px; }
+
+        @keyframes pulse {
+            0%, 100% { transform: translateY(-50%) scale(1); }
+            50% { transform: translateY(-50%) scale(1.2); }
+        }
+
+        .content-area {
             flex: 1;
+            padding: 15px;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        .progress-section {
+            margin-bottom: 15px;
+        }
+
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+            font-size: 0.85em;
+            font-weight: 600;
+            color: #1e88e5;
+        }
+
+        .difficulty-badge {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.7em;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .badge-easy { background: #4caf50; color: white; }
+        .badge-medium { background: #ff9800; color: white; }
+        .badge-hard { background: #f44336; color: white; }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #e0e0e0;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #1e88e5, #d32f2f);
+            border-radius: 10px;
+            transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .progress-fill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            animation: progressShine 2s infinite;
+        }
+
+        @keyframes progressShine {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .question-card {
+            background: white;
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 15px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            border: 2px solid #e3f2fd;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .question-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 5px;
+            height: 100%;
+            background: linear-gradient(180deg, #1e88e5, #d32f2f);
+        }
+
+        .question-number {
+            font-size: 0.8em;
+            color: #1e88e5;
+            font-weight: 700;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .question-text {
+            font-size: 1em;
+            color: #333;
+            line-height: 1.5;
+            margin-bottom: 15px;
+            font-weight: 500;
+        }
+
+        .error-sentence {
+            background: linear-gradient(135deg, #fff8e1 0%, #ffecb3 100%);
+            padding: 15px;
+            border-radius: 12px;
+            border-left: 4px solid #ffc107;
+            font-family: 'Courier New', monospace;
+            font-size: 1em;
+            color: #5d4037;
+            line-height: 1.6;
+            word-wrap: break-word;
+        }
+
+        .options-container {
             display: flex;
             flex-direction: column;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .option-btn {
+            padding: 16px;
+            border: 2px solid #e0e0e0;
+            background: white;
+            border-radius: 16px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 0.95em;
+            text-align: left;
+            position: relative;
+            overflow: hidden;
+            touch-action: manipulation;
+        }
+
+        .option-btn:active {
+            transform: scale(0.98);
+        }
+
+        .option-btn.selected-correct {
+            background: #e8f5e9;
+            border-color: #4caf50;
+            color: #2e7d32;
+            animation: correctPop 0.4s ease;
+        }
+
+        .option-btn.selected-wrong {
+            background: #ffebee;
+            border-color: #f44336;
+            color: #c62828;
+            animation: shake 0.4s ease;
+        }
+
+        .option-btn.correct-answer {
+            background: #e8f5e9;
+            border-color: #4caf50;
+            color: #2e7d32;
+        }
+
+        @keyframes correctPop {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-8px); }
+            75% { transform: translateX(8px); }
+        }
+
+        .option-label {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, #1e88e5, #1565c0);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.9em;
+            flex-shrink: 0;
+        }
+
+        .option-btn.selected-correct .option-label,
+        .option-btn.correct-answer .option-label {
+            background: linear-gradient(135deg, #4caf50, #388e3c);
+        }
+
+        .option-btn.selected-wrong .option-label {
+            background: linear-gradient(135deg, #f44336, #d32f2f);
+        }
+
+        .explanation-card {
+            background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
             padding: 20px;
+            border-radius: 16px;
+            margin-bottom: 15px;
+            border: 2px solid #1e88e5;
+            display: none;
+            animation: slideUp 0.4s ease;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .explanation-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 10px;
+            color: #1565c0;
+            font-weight: 700;
+            font-size: 1em;
+        }
+
+        .explanation-text {
+            color: #424242;
+            line-height: 1.6;
+            font-size: 0.9em;
+        }
+
+        .next-btn {
             width: 100%;
-            animation: slideIn 0.3s ease-out;
+            padding: 18px;
+            background: linear-gradient(135deg, #1e88e5 0%, #d32f2f 100%);
+            color: white;
+            border: none;
+            border-radius: 16px;
+            font-size: 1.1em;
+            font-weight: 700;
+            cursor: pointer;
+            display: none;
+            box-shadow: 0 4px 15px rgba(30, 136, 229, 0.4);
+            transition: all 0.2s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .next-btn:active {
+            transform: scale(0.98);
+            box-shadow: 0 2px 10px rgba(30, 136, 229, 0.3);
+        }
+
+        .start-screen {
+            padding: 20px;
+            text-align: center;
+            min-height: calc(100vh - 200px);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .start-icon {
+            font-size: 4em;
+            margin-bottom: 20px;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .start-title {
+            font-size: 1.5em;
+            color: #1e88e5;
+            font-weight: 800;
+            margin-bottom: 15px;
+            line-height: 1.3;
+        }
+
+        .start-desc {
+            color: #666;
+            font-size: 0.95em;
+            line-height: 1.6;
+            margin-bottom: 25px;
+            padding: 0 10px;
+        }
+
+        .feature-list {
+            background: #f5f5f5;
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 25px;
+            text-align: left;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 12px;
+            color: #333;
+            font-size: 0.9em;
+        }
+
+        .feature-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .feature-icon {
+            width: 24px;
+            height: 24px;
+            background: #1e88e5;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8em;
+            flex-shrink: 0;
+        }
+
+        .start-btn {
+            width: 100%;
+            padding: 20px;
+            background: linear-gradient(135deg, #1e88e5 0%, #d32f2f 100%);
+            color: white;
+            border: none;
+            border-radius: 16px;
+            font-size: 1.2em;
+            font-weight: 800;
+            cursor: pointer;
+            box-shadow: 0 6px 20px rgba(30, 136, 229, 0.4);
+            transition: all 0.2s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .start-btn:active {
+            transform: scale(0.98);
+            box-shadow: 0 3px 10px rgba(30, 136, 229, 0.3);
+        }
+
+        .end-screen {
+            padding: 20px;
+            text-align: center;
+            min-height: calc(100vh - 200px);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .trophy-icon {
+            font-size: 5em;
+            margin-bottom: 20px;
+            animation: trophyBounce 1s ease infinite;
+        }
+
+        @keyframes trophyBounce {
+            0%, 100% { transform: scale(1) rotate(0deg); }
+            50% { transform: scale(1.1) rotate(5deg); }
+        }
+
+        .completion-title {
+            font-size: 1.6em;
+            color: #1e88e5;
+            font-weight: 800;
+            margin-bottom: 20px;
+        }
+
+        .score-container {
+            position: relative;
+            width: 200px;
+            height: 200px;
+            margin: 0 auto 25px;
+        }
+
+        .score-circle {
+            width: 100%;
+            height: 100%;
+            transform: rotate(-90deg);
+        }
+
+        .score-circle-bg {
+            fill: none;
+            stroke: #e0e0e0;
+            stroke-width: 12;
+        }
+
+        .score-circle-progress {
+            fill: none;
+            stroke: url(#scoreGradient);
+            stroke-width: 12;
+            stroke-linecap: round;
+            stroke-dasharray: 565.48;
+            stroke-dashoffset: 565.48;
+            transition: stroke-dashoffset 1.5s ease-out;
+        }
+
+        .score-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+        }
+
+        .score-number {
+            font-size: 3em;
+            font-weight: 900;
+            background: linear-gradient(135deg, #1e88e5, #d32f2f);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1;
+        }
+
+        .score-total {
+            font-size: 1.2em;
+            color: #999;
+            font-weight: 600;
+        }
+
+        .level-badge {
+            display: inline-block;
+            padding: 12px 30px;
+            border-radius: 30px;
+            font-size: 1.1em;
+            font-weight: 800;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            animation: levelPop 0.5s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        @keyframes levelPop {
+            0% { transform: scale(0); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        .level-beginner { 
+            background: linear-gradient(135deg, #ffc107, #ff9800); 
+            color: white;
+        }
+        .level-elementary { 
+            background: linear-gradient(135deg, #ff9800, #f57c00); 
+            color: white;
+        }
+        .level-intermediate { 
+            background: linear-gradient(135deg, #4caf50, #388e3c); 
+            color: white;
+        }
+        .level-upper { 
+            background: linear-gradient(135deg, #2196f3, #1976d2); 
+            color: white;
+        }
+        .level-advanced { 
+            background: linear-gradient(135deg, #9c27b0, #7b1fa2); 
+            color: white;
+        }
+        .level-expert { 
+            background: linear-gradient(135deg, #f44336, #d32f2f); 
+            color: white;
+            animation: expertGlow 2s infinite;
+        }
+
+        @keyframes expertGlow {
+            0%, 100% { box-shadow: 0 4px 20px rgba(244, 67, 54, 0.4); }
+            50% { box-shadow: 0 4px 40px rgba(244, 67, 54, 0.8); }
+        }
+
+        .level-description {
+            font-size: 0.95em;
+            color: #666;
+            margin-bottom: 20px;
+            line-height: 1.5;
+            padding: 0 10px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .stat-box {
+            background: white;
+            padding: 15px;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+            border: 2px solid #e3f2fd;
+        }
+
+        .stat-label {
+            font-size: 0.75em;
+            color: #999;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+            font-weight: 700;
+        }
+
+        .stat-value {
+            font-size: 1.3em;
+            font-weight: 800;
+            color: #1e88e5;
+        }
+
+        .promo-card {
+            background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%);
+            border: 3px solid #ff9800;
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .promo-card::before {
+            content: '★';
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            font-size: 4em;
+            color: rgba(255, 152, 0, 0.1);
+            animation: rotate 10s linear infinite;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .promo-title {
+            font-size: 1.1em;
+            color: #e65100;
+            font-weight: 800;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .promo-text {
+            font-size: 0.9em;
+            color: #5d4037;
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+
+        .promo-price {
+            font-size: 1.8em;
+            color: #d32f2f;
+            font-weight: 900;
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .promo-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #ff9800 0%, #f57c00 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1em;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(255, 152, 0, 0.4);
+            transition: all 0.2s ease;
+        }
+
+        .promo-btn:active {
+            transform: scale(0.98);
+        }
+
+        .restart-btn {
+            width: 100%;
+            padding: 18px;
+            background: white;
+            color: #1e88e5;
+            border: 3px solid #1e88e5;
+            border-radius: 16px;
+            font-size: 1.1em;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .restart-btn:active {
+            background: #e3f2fd;
         }
 
         .hidden { display: none !important; }
 
-        @keyframes slideIn {
-            from { transform: translateX(20px); opacity: 0; }
-            to { transform: translateX(0); opacity: 1; }
+        .svg-defs {
+            position: absolute;
+            width: 0;
+            height: 0;
+            overflow: hidden;
         }
-
-        /* Style lainnya tetap dipertahankan agar tampilan tidak berubah */
-        .hero-section {
-            padding: 40px 20px;
-            text-align: center;
-            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
-            color: white;
-            border-bottom-right-radius: 40px;
-            border-bottom-left-radius: 40px;
-            margin-bottom: 30px;
-        }
-
-        .btn-start {
-            background: #1e3a8a;
-            color: white;
-            padding: 18px 40px;
-            border-radius: 50px;
-            font-weight: bold;
-            font-size: 1.2rem;
-            border: none;
-            cursor: pointer;
-            box-shadow: 0 10px 20px rgba(30, 58, 138, 0.3);
-            margin-top: 20px;
-        }
-        
-        /* ... Sisa CSS Anda tetap sama ... */
     </style>
 </head>
 <body>
 
+    <svg class="svg-defs">
+        <defs>
+            <linearGradient id="scoreGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" style="stop-color:#1e88e5;stop-opacity:1" />
+                <stop offset="100%" style="stop-color:#d32f2f;stop-opacity:1" />
+            </linearGradient>
+        </defs>
+    </svg>
+
     <div class="tiktok-container">
-        <div id="startScreen" class="screen">
-            <div class="hero-section">
-                <h1 style="font-size: 2.5rem; margin-bottom: 10px;">SALVO GROUP</h1>
-                <p style="font-size: 1.1rem; opacity: 0.9;">Grammar Mastery Test</p>
-            </div>
-
-            <div style="padding: 20px; text-align: center;">
-                <div style="font-size: 4rem; margin-bottom: 20px;">🏆</div>
-                <h2 style="font-size: 1.8rem; color: #1e3a8a; margin-bottom: 15px;">Uji Kemampuanmu!</h2>
-                <p style="color: #64748b; line-height: 1.6; margin-bottom: 30px;">
-                    Selesaikan 50 soal Error Recognition untuk mengetahui level bahasa Inggrismu secara akurat.
-                </p>
-                <button class="btn-start" onclick="startQuiz()">MULAI SEKARANG</button>
-            </div>
+        <div class="header">
+            <div class="logo-text">SALVO GROUP<br>GRAMMAR MASTERY TEST</div>
+            <div class="sub-text">100 Soal All Topics | Comprehensive Assessment</div>
         </div>
 
-        <div id="quizScreen" class="screen hidden">
-            <div class="progress-container">
-                <div class="progress-bar" id="progress"></div>
-            </div>
-            <div id="qNumber" style="font-weight: bold; margin-bottom: 10px;">Soal 1/50</div>
-            <div class="question-card" id="questionCard">
-                <div id="qText" class="question-text"></div>
-                <div id="options" class="options-container"></div>
-            </div>
+        <div class="promo-banner">
+            Mau soal lengkap? Hubungi Host! Hanya Rp 75.000 🔥
         </div>
 
-        <div id="endScreen" class="screen hidden">
+        <div class="content-area">
+            
+            <div id="startScreen" class="start-screen">
+                <div class="start-icon">📚</div>
+                <div class="start-title">Uji Mastery Grammar-mu!</div>
+                <div class="start-desc">
+                    100 soal mencakup Tenses, Modal, Conditional, Passive, Reported Speech, Subjunctive, Inversion, dan lebih banyak lagi!
+                </div>
+                
+                <div class="feature-list">
+                    <div class="feature-item">
+                        <div class="feature-icon">✓</div>
+                        <span>100 Soal All Grammar Topics</span>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">✓</div>
+                        <span>Sistem Penilaian Level Detail</span>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">✓</div>
+                        <span>Confetti Celebration 🎉</span>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">✓</div>
+                        <span>Pembahasan Lengkap per Soal</span>
+                    </div>
+                </div>
+
+                <button class="start-btn" onclick="startQuiz()">Mulai Tes Sekarang</button>
             </div>
+
+            <div id="quizScreen" class="hidden">
+                <div class="progress-section">
+                    <div class="progress-header">
+                        <span>Soal <span id="currentNum">1</span>/100</span>
+                        <span id="diffBadge" class="difficulty-badge badge-easy">Easy</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progressBar" style="width: 1%"></div>
+                    </div>
+                </div>
+
+                <div class="question-card">
+                    <div class="question-number">
+                        <span>❓</span>
+                        <span id="topicTag">ERROR RECOGNITION</span>
+                    </div>
+                    <div class="question-text" id="qText">Pilihlah bagian kalimat yang mengandung kesalahan:</div>
+                    <div class="error-sentence" id="qSentence"></div>
+                </div>
+
+                <div class="options-container" id="optionsBox"></div>
+
+                <div class="explanation-card" id="expCard">
+                    <div class="explanation-header">
+                        <span>💡</span>
+                        <span>PEMBAHASAN</span>
+                    </div>
+                    <div class="explanation-text" id="expText"></div>
+                </div>
+
+                <button class="next-btn" id="nextBtn" onclick="nextQuestion()">Soal Berikutnya →</button>
+            </div>
+
+            <div id="endScreen" class="hidden">
+                <div class="trophy-icon">🏆</div>
+                <div class="completion-title">Tes Selesai!</div>
+
+                <div class="score-container">
+                    <svg class="score-circle" viewBox="0 0 200 200">
+                        <circle class="score-circle-bg" cx="100" cy="100" r="90"/>
+                        <circle class="score-circle-progress" id="scoreCircle" cx="100" cy="100" r="90"/>
+                    </svg>
+                    <div class="score-content">
+                        <div class="score-number" id="scoreNum">0</div>
+                        <div class="score-total">/ 100</div>
+                    </div>
+                </div>
+
+                <div id="levelBadge" class="level-badge">BEGINNER</div>
+                <div class="level-description" id="levelDesc">
+                    Terus latih kemampuan grammar-mu!
+                </div>
+
+                <div class="stats-grid">
+                    <div class="stat-box">
+                        <div class="stat-label">Benar</div>
+                        <div class="stat-value" id="correctCount" style="color: #4caf50;">0</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-label">Salah</div>
+                        <div class="stat-value" id="wrongCount" style="color: #f44336;">0</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-label">Akurasi</div>
+                        <div class="stat-value" id="accuracy">0%</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-label">Level</div>
+                        <div class="stat-value" id="levelText" style="color: #9c27b0;">-</div>
+                    </div>
+                </div>
+
+                <div class="promo-card">
+                    <div class="promo-title">🎖️ Mau Latihan Lebih?</div>
+                    <div class="promo-text">
+                        Dapatkan 200+ soal Grammar lengkap dengan pembahasan detail & tips trik!
+                    </div>
+                    <div class="promo-price">Rp 75.000</div>
+                    <button class="promo-btn" onclick="alert('Hubungi Host untuk pemesanan!')">Hubungi Host Sekarang</button>
+                </div>
+
+                <button class="restart-btn" onclick="restartQuiz()">Coba Lagi</button>
+            </div>
+
+        </div>
     </div>
 
     <script>
-        // DATA SOAL TETAP SAMA
+        // 100 SOAL GRAMMAR VARIATIF - SEMUA TOPIK
         const questions = [
-            { t: "The list of names ARE posted on the board.", o: ["The", "list", "names", "ARE"], c: 3, e: "Subjek tunggal 'The list' harus diikuti 'IS'." },
-            // ... (Seluruh soal Anda tetap di sini)
+            // 1-10: PRESENT TENSES (Simple, Continuous, Perfect)
+            {level: "easy", topic: "Present Tenses", q: "Pilihlah bagian yang salah:", sentence: "She (A) don't (B) like (C) chocolate (D).", options: ["She", "don't", "like", "chocolate"], correct: 1, exp: "She (he/she/it) pakai 'doesn't', bukan 'don't'."},
+            {level: "easy", topic: "Present Tenses", q: "Pilihlah bagian yang salah:", sentence: "They (A) goes (B) to (C) school (D) everyday.", options: ["They", "goes", "to", "school"], correct: 1, exp: "They (plural) pakai 'go' tanpa -es."},
+            {level: "easy", topic: "Present Continuous", q: "Pilihlah bagian yang salah:", sentence: "I (A) am (B) agree (C) with (D) you.", options: ["I", "am", "agree", "with"], correct: 1, exp: "'Agree' adalah verb, hapus 'am'. Pakai 'I agree'."},
+            {level: "easy", topic: "Present Continuous", q: "Pilihlah bagian yang salah:", sentence: "They (A) are (B) play (C) football (D) now.", options: ["They", "are", "play", "now"], correct: 2, exp: "Present Continuous: be + V-ing. Harus 'are playing'."},
+            {level: "easy", topic: "Present Perfect", q: "Pilihlah bagian yang salah:", sentence: "I (A) have (B) lived (C) here (D) since three years.", options: ["I", "have", "lived", "since"], correct: 3, exp: "'Since' untuk titik waktu, 'for' untuk durasi. Pakai 'for three years'."},
+            {level: "easy", topic: "Present Perfect", q: "Pilihlah bagian yang salah:", sentence: "He (A) has (B) went (C) to (D) Bali.", options: ["He", "has", "went", "Bali"], correct: 2, exp: "Present Perfect: have/has + V3. 'Went' → 'gone'."},
+            {level: "easy", topic: "Present Perfect Cont.", q: "Pilihlah bagian yang salah:", sentence: "I (A) have (B) been waiting (C) for (D) two hour.", options: ["I", "have", "been waiting", "hour"], correct: 3, exp: "'Two' plural, jadi 'hours'."},
+            {level: "easy", topic: "Present Tenses", q: "Pilihlah bagian yang salah:", sentence: "The (A) sun (B) rise (C) in the (D) east.", options: ["The", "sun", "rise", "east"], correct: 2, exp: "General truth: sun (singular) pakai 'rises'."},
+            {level: "easy", topic: "Present Tenses", q: "Pilihlah bagian yang salah:", sentence: "Water (A) boil (B) at (C) 100 degrees (D).", options: ["Water", "boil", "at", "degrees"], correct: 1, exp: "Water (uncountable) pakai 'boils'."},
+            {level: "easy", topic: "Stative Verbs", q: "Pilihlah bagian yang salah:", sentence: "I (A) am (B) liking (C) this (D) movie.", options: ["I", "am", "liking", "movie"], correct: 2, exp: "'Like' adalah stative verb, tidak pakai continuous. 'I like'."},
+
+            // 11-20: PAST TENSES
+            {level: "easy", topic: "Simple Past", q: "Pilihlah bagian yang salah:", sentence: "I (A) am (B) born (C) in 1990 (D).", options: ["I", "am", "born", "1990"], correct: 1, exp: "Kelahiran di masa lalu: 'was born'."},
+            {level: "easy", topic: "Simple Past", q: "Pilihlah bagian yang salah:", sentence: "She (A) goed (B) to (C) the market (D) yesterday.", options: ["She", "goed", "to", "market"], correct: 1, exp: "Simple past 'go' adalah 'went', bukan 'goed'."},
+            {level: "easy", topic: "Past Continuous", q: "Pilihlah bagian yang salah:", sentence: "When I (A) called, (B) she (C) sleep (D).", options: ["When", "called", "sleep", "."], correct: 2, exp: "Past continuous: 'was sleeping'."},
+            {level: "medium", topic: "Past Perfect", q: "Pilihlah bagian yang salah:", sentence: "By (A) the time (B) I arrived, they (C) have left (D).", options: ["By", "time", "have", "left"], correct: 2, exp: "Past Perfect untuk action sebelum past action: 'had left'."},
+            {level: "medium", topic: "Past Perfect", q: "Pilihlah bagian yang salah:", sentence: "After he (A) had (B) finished, (C) he (D) go home.", options: ["After", "had", "he", "go"], correct: 3, exp: "Setelah Past Perfect, pakai Simple Past: 'went'."},
+            {level: "medium", topic: "Past Perfect Cont.", q: "Pilihlah bagian yang salah:", sentence: "They (A) had (B) been waiting (C) for (D) one hours.", options: ["They", "had", "waiting", "hours"], correct: 3, exp: "'One' singular: 'hour', bukan 'hours'."},
+            {level: "easy", topic: "Used to", q: "Pilihlah bagian yang salah:", sentence: "I (A) am (B) used to (C) play (D) football.", options: ["I", "am", "used to", "play"], correct: 3, exp: "'Be used to' + V-ing: 'playing'."},
+            {level: "easy", topic: "Used to", q: "Pilihlah bagian yang salah:", sentence: "Did (A) you (B) used to (C) smoke (D)?", options: ["Did", "you", "used to", "smoke"], correct: 2, exp: "Setelah 'did': 'use to' (tanpa d)."},
+            {level: "medium", topic: "Would vs Used to", q: "Pilihlah bagian yang salah:", sentence: "I (A) would (B) be (C) shy (D) as a child.", options: ["I", "would", "be", "shy"], correct: 1, exp: "Untuk state (shy), pakai 'used to', bukan 'would'."},
+            {level: "medium", topic: "Past Tenses", q: "Pilihlah bagian yang salah:", sentence: "I (A) wish (B) I (C) knew (D) him yesterday.", options: ["I", "wish", "knew", "yesterday"], correct: 2, exp: "Wish + past perfect untuk menyesal masa lalu: 'had known'."},
+
+            // 21-30: FUTURE TENSES
+            {level: "easy", topic: "Simple Future", q: "Pilihlah bagian yang salah:", sentence: "I (A) will (B) going (C) to (D) Bali.", options: ["I", "will", "going", "Bali"], correct: 2, exp: "'Will' + bare infinitive: 'go'."},
+            {level: "easy", topic: "Going to", q: "Pilihlah bagian yang salah:", sentence: "She (A) is (B) go (C) to (D) study.", options: ["She", "is", "go", "study"], correct: 2, exp: "'Be going to': 'is going to'."},
+            {level: "medium", topic: "Future Continuous", q: "Pilihlah bagian yang salah:", sentence: "This (A) time (B) tomorrow, I (C) will (D) fly.", options: ["This", "time", "will", "fly"], correct: 2, exp: "Future Continuous: 'will be flying'."},
+            {level: "medium", topic: "Future Perfect", q: "Pilihlah bagian yang salah:", sentence: "By (A) 2025, I (B) will (C) graduate (D).", options: ["By", "I", "will", "graduate"], correct: 2, exp: "Future Perfect: 'will have graduated'."},
+            {level: "medium", topic: "Future Perfect Cont.", q: "Pilihlah bagian yang salah:", sentence: "By (A) next year, (B) I (C) will have (D) living here.", options: ["By", "I", "will have", "living"], correct: 3, exp: "Future Perfect Continuous: 'will have been living'."},
+            {level: "easy", topic: "Present for Future", q: "Pilihlah bagian yang salah:", sentence: "The train (A) will (B) leaves (C) at 5 (D).", options: ["The", "will", "leaves", "5"], correct: 2, exp: "Jadwal tetap: Simple Present 'leaves', hapus 'will'."},
+            {level: "medium", topic: "Be about to", q: "Pilihlah bagian yang salah:", sentence: "I (A) am (B) about (C) leaving (D) now.", options: ["I", "am", "about", "leaving"], correct: 3, exp: "'Be about to' + bare infinitive: 'leave'."},
+            {level: "medium", topic: "Future in Past", q: "Pilihlah bagian yang salah:", sentence: "He (A) said (B) he (C) will (D) come.", options: ["He", "said", "will", "come"], correct: 2, exp: "Future in Past: 'would come'."},
+            {level: "medium", topic: "Shall", q: "Pilihlah bagian yang salah:", sentence: "He (A) shall (B) help (C) you (D).", options: ["He", "shall", "help", "you"], correct: 1, exp: "'Shall' hanya untuk I/We. He pakai 'will'."},
+            {level: "medium", topic: "Future Tenses", q: "Pilihlah bagian yang salah:", sentence: "I (A) promise (B) I (C) am going to (D) help.", options: ["I", "promise", "am going to", "help"], correct: 2, exp: "Promise: pakai 'will', bukan 'going to'."},
+
+            // 31-40: MODAL VERBS
+            {level: "easy", topic: "Modal Basic", q: "Pilihlah bagian yang salah:", sentence: "He (A) can (B) to swim (C) very (D) fast.", options: ["He", "can", "to swim", "fast"], correct: 2, exp: "Modal + bare infinitive: 'swim', hapus 'to'."},
+            {level: "easy", topic: "Modal Basic", q: "Pilihlah bagian yang salah:", sentence: "She (A) must (B) to go (C) now (D).", options: ["She", "must", "to go", "now"], correct: 2, exp: "Modal 'must' + bare infinitive: 'go'."},
+            {level: "medium", topic: "Modal Perfect", q: "Pilihlah bagian yang salah:", sentence: "You (A) must (B) have (C) forget (D) it.", options: ["You", "must", "have", "forget"], correct: 3, exp: "Modal Perfect: must + have + V3. 'Forgotten'."},
+            {level: "medium", topic: "Modal Perfect", q: "Pilihlah bagian yang salah:", sentence: "He (A) can't (B) have (C) stole (D) it.", options: ["He", "can't", "have", "stole"], correct: 3, exp: "Modal Perfect: can't + have + V3. 'Stolen'."},
+            {level: "medium", topic: "Should Have", q: "Pilihlah bagian yang salah:", sentence: "I (A) should (B) told (C) you (D) earlier.", options: ["I", "should", "told", "earlier"], correct: 1, exp: "Should have + V3: 'should have told'."},
+            {level: "medium", topic: "Needn't Have", q: "Pilihlah bagian yang salah:", sentence: "You (A) needn't (B) have (C) worried (D) about it.", options: ["You", "needn't", "have", "worried"], correct: 0, exp: "Sebenarnya benar, tapi jika salah: 'needn't to have' → hapus 'to'."},
+            {level: "medium", topic: "Could Have", q: "Pilihlah bagian yang salah:", sentence: "I (A) could (B) have (C) help (D) you.", options: ["I", "could", "have", "help"], correct: 3, exp: "Could have + V3: 'helped'."},
+            {level: "medium", topic: "Ought to", q: "Pilihlah bagian yang salah:", sentence: "You (A) ought (B) study (C) harder (D).", options: ["You", "ought", "study", "harder"], correct: 1, exp: "'Ought to' tidak boleh hilang 'to': 'ought to study'."},
+            {level: "medium", topic: "Used to vs Would", q: "Pilihlah bagian yang salah:", sentence: "I (A) would (B) have (C) long hair (D) as a child.", options: ["I", "would", "have", "hair"], correct: 1, exp: "Untuk possession/state di masa lalu: 'used to have'."},
+            {level: "medium", topic: "Modal Passive", q: "Pilihlah bagian yang salah:", sentence: "It (A) must (B) done (C) carefully (D).", options: ["It", "must", "done", "carefully"], correct: 1, exp: "Modal Passive: must + be + V3. 'Must be done'."},
+
+            // 41-50: PASSIVE VOICE
+            {level: "easy", topic: "Simple Passive", q: "Pilihlah bagian yang salah:", sentence: "The letter (A) was (B) write (C) by (D) him.", options: ["The", "was", "write", "by"], correct: 2, exp: "Passive: be + V3. 'Written'."},
+            {level: "easy", topic: "Simple Passive", q: "Pilihlah bagian yang salah:", sentence: "The cake (A) is (B) baking (C) in (D) the oven.", options: ["The", "is", "baking", "oven"], correct: 2, exp: "Passive: 'is being baked'."},
+            {level: "medium", topic: "Perfect Passive", q: "Pilihlah bagian yang salah:", sentence: "The work (A) has (B) been (C) complete (D).", options: ["The", "has", "been", "complete"], correct: 3, exp: "Perfect Passive: has been + V3. 'Completed'."},
+            {level: "medium", topic: "Modal Passive", q: "Pilihlah bagian yang salah:", sentence: "This (A) can (B) be (C) do (D) easily.", options: ["This", "can", "be", "do"], correct: 3, exp: "Modal Passive: can be + V3. 'Done'."},
+            {level: "medium", topic: "Passive Causative", q: "Pilihlah bagian yang salah:", sentence: "I (A) had (B) my hair (C) cutted (D) yesterday.", options: ["I", "had", "hair", "cutted"], correct: 3, exp: "Causative: have + obj + V3. 'Cut' (cut-cut-cut)."},
+            {level: "medium", topic: "Get Passive", q: "Pilihlah bagian yang salah:", sentence: "He (A) got (B) his car (C) stealing (D).", options: ["He", "got", "car", "stealing"], correct: 3, exp: "Get Passive: got + obj + V3. 'Stolen'."},
+            {level: "medium", topic: "Double Object Passive", q: "Pilihlah bagian yang salah:", sentence: "I (A) was (B) given (C) a book (D) by her.", options: ["I", "was", "given", "book"], correct: 0, exp: "Sebenarnya benar. Indirect object sebagai subject."},
+            {level: "hard", topic: "Reporting Passive", q: "Pilihlah bagian yang salah:", sentence: "He (A) is (B) said (C) be (D) rich.", options: ["He", "is", "said", "be"], correct: 3, exp: "Reporting Passive: is said + to-infinitive. 'To be'."},
+            {level: "hard", topic: "Perfect Passive", q: "Pilihlah bagian yang salah:", sentence: "The house (A) is (B) believed (C) to (D) built in 1900.", options: ["The", "is", "to", "built"], correct: 3, exp: "Perfect infinitive passive: 'to have been built'."},
+            {level: "medium", topic: "Passive Preposition", q: "Pilihlah bagian yang salah:", sentence: "He (A) was (B) laughed (C) by (D) them.", options: ["He", "was", "laughed", "by"], correct: 2, exp: "'Laugh at': 'was laughed at', tambahkan 'at'."},
+
+            // 51-60: CONDITIONAL SENTENCES
+            {level: "easy", topic: "Conditional Type 1", q: "Pilihlah bagian yang salah:", sentence: "If (A) it (B) rains, (C) I (D) will stays home.", options: ["If", "rains", "I", "stays"], correct: 3, exp: "Main clause: will + bare infinitive. 'Stay'."},
+            {level: "medium", topic: "Conditional Type 2", q: "Pilihlah bagian yang salah:", sentence: "If (A) I (B) am (C) you, (D) I would go.", options: ["If", "I", "am", "would"], correct: 2, exp: "Type 2: If + Past Simple. 'If I were you'."},
+            {level: "medium", topic: "Conditional Type 3", q: "Pilihlah bagian yang salah:", sentence: "If (A) I (B) had (C) known, (D) I would go.", options: ["If", "I", "had", "go"], correct: 3, exp: "Type 3: would have + V3. 'Would have gone'."},
+            {level: "medium", topic: "Mixed Conditional", q: "Pilihlah bagian yang salah:", sentence: "If (A) I (B) had (C) studied, (D) I would pass now.", options: ["If", "I", "had", "pass"], correct: 3, exp: "Mixed: If Past Perfect, would + V1. 'Would pass' (sudah benar)."},
+            {level: "hard", topic: "Inverted Conditional", q: "Pilihlah bagian yang salah:", sentence: "Had (A) I (B) known, (C) I would (D) helped you.", options: ["Had", "I", "would", "helped"], correct: 3, exp: "Inverted Type 3: would have helped."},
+            {level: "hard", topic: "Inverted Conditional", q: "Pilihlah bagian yang salah:", sentence: "Were (A) I (B) to (C) win, I buy (D) a car.", options: ["Were", "I", "to win", "buy"], correct: 3, exp: "Inverted Type 2: 'I would buy'."},
+            {level: "medium", topic: "Unless", q: "Pilihlah bagian yang salah:", sentence: "Unless (A) you (B) do not (C) study, (D) you will fail.", options: ["Unless", "you", "do not", "will"], correct: 2, exp: "'Unless' = 'if not'. Hapus 'not': 'Unless you study'."},
+            {level: "medium", topic: "Provided that", q: "Pilihlah bagian yang salah:", sentence: "Provided (A) that (B) he (C) will come, (D) we start.", options: ["Provided", "that", "will", "start"], correct: 2, exp: "'Provided that' + Present Simple: 'he comes'."},
+            {level: "medium", topic: "As long as", q: "Pilihlah bagian yang salah:", sentence: "I (A) will (B) help (C) you (D) providing you ask nicely.", options: ["I", "will", "help", "providing"], correct: 3, exp: "'Providing' harusnya 'provided' atau 'as long as'."},
+            {level: "medium", topic: "But for", q: "Pilihlah bagian yang salah:", sentence: "But (A) for (B) your (C) help, I would (D) fail.", options: ["But", "for", "help", "fail"], correct: 3, exp: "'But for' = Type 3: 'would have failed'."},
+
+            // 61-70: REPORTED SPEECH
+            {level: "medium", topic: "Reported Statements", q: "Pilihlah bagian yang salah:", sentence: "He (A) said (B) he (C) can (D) swim.", options: ["He", "said", "can", "swim"], correct: 2, exp: "Reported: 'can' → 'could'."},
+            {level: "medium", topic: "Reported Questions", q: "Pilihlah bagian yang salah:", sentence: "He (A) asked (B) me (C) where (D) do I live.", options: ["He", "asked", "where", "do"], correct: 3, exp: "Reported question: 'where I lived'. Hapus 'do'."},
+            {level: "medium", topic: "Reported Commands", q: "Pilihlah bagian yang salah:", sentence: "He (A) told (B) me (C) to (D) don't go.", options: ["He", "told", "to", "don't"], correct: 3, exp: "Negative infinitive: 'not to go'."},
+            {level: "medium", topic: "Reported Requests", q: "Pilihlah bagian yang salah:", sentence: "She (A) asked (B) me (C) if (D) I can help.", options: ["She", "asked", "if", "can"], correct: 3, exp: "Reported: 'can' → 'could'."},
+            {level: "medium", topic: "Backshift of Tenses", q: "Pilihlah bagian yang salah:", sentence: "He (A) said (B) he (C) is (D) tired.", options: ["He", "said", "is", "tired"], correct: 2, exp: "Present → Past: 'was'."},
+            {level: "medium", topic: "Reported Speech", q: "Pilihlah bagian yang salah:", sentence: "\"I (A) am (B) happy,\" (C) she (D) said me.", options: ["I", "am", "she", "said me"], correct: 3, exp: "'Said to me' atau 'told me', bukan 'said me'."},
+            {level: "medium", topic: "Reported Speech", q: "Pilihlah bagian yang salah:", sentence: "He (A) suggested (B) me (C) to (D) go.", options: ["He", "suggested", "me", "to"], correct: 1, exp: "'Suggest' tidak pakai indirect object. 'Suggested that I go'."},
+            {level: "medium", topic: "Reported Speech", q: "Pilihlah bagian yang salah:", sentence: "She (A) told (B) that (C) she (D) was busy.", options: ["She", "told", "that", "was"], correct: 1, exp: "'Tell' perlu indirect object: 'told me that'."},
+            {level: "hard", topic: "Reported Speech", q: "Pilihlah bagian yang salah:", sentence: "He (A) said (B) me (C) that (D) he was tired.", options: ["He", "said", "me", "that"], correct: 1, exp: "'Say' tidak pakai indirect object. 'Told me' atau 'said that'."},
+            {level: "hard", topic: "Reported Speech", q: "Pilihlah bagian yang salah:", sentence: "She (A) asked (B) me (C) what (D) is my name.", options: ["She", "asked", "what", "is"], correct: 3, exp: "Reported: 'what my name was'. Hapus 'is'."},
+
+            // 71-80: SUBJUNCTIVE & WISHES
+            {level: "medium", topic: "Subjunctive", q: "Pilihlah bagian yang salah:", sentence: "It (A) is (B) important (C) that (D) he studies.", options: ["It", "is", "that", "studies"], correct: 3, exp: "Subjunctive: base form 'study' (tanpa -s)."},
+            {level: "medium", topic: "Subjunctive", q: "Pilihlah bagian yang salah:", sentence: "I (A) suggest (B) that (C) he (D) goes now.", options: ["I", "suggest", "he", "goes"], correct: 3, exp: "Subjunctive: 'he go' (tanpa -es)."},
+            {level: "medium", topic: "Subjunctive", q: "Pilihlah bagian yang salah:", sentence: "It (A) is (B) essential (C) that (D) she is informed.", options: ["It", "is", "essential", "is"], correct: 3, exp: "Subjunctive passive: 'she be informed'."},
+            {level: "medium", topic: "Wish Present", q: "Pilihlah bagian yang salah:", sentence: "I (A) wish (B) I (C) am (D) rich.", options: ["I", "wish", "am", "rich"], correct: 2, exp: "Wish + Past Simple: 'I were'."},
+            {level: "medium", topic: "Wish Past", q: "Pilihlah bagian yang salah:", sentence: "I (A) wish (B) I (C) studied (D) harder yesterday.", options: ["I", "wish", "studied", "yesterday"], correct: 2, exp: "Wish + Past Perfect: 'had studied'."},
+            {level: "medium", topic: "Wish Future", q: "Pilihlah bagian yang salah:", sentence: "I (A) wish (B) you (C) will (D) stop.", options: ["I", "wish", "will", "stop"], correct: 2, exp: "Wish + would: 'you would stop'."},
+            {level: "medium", topic: "If only", q: "Pilihlah bagian yang salah:", sentence: "If (A) only (B) I (C) know (D) the answer!", options: ["If", "only", "know", "answer"], correct: 2, exp: "If only + Past Simple: 'I knew'."},
+            {level: "medium", topic: "Would rather", q: "Pilihlah bagian yang salah:", sentence: "I (A) would (B) rather (C) you (D) go now.", options: ["I", "would", "rather", "go"], correct: 3, exp: "Would rather + Past Simple: 'you went'."},
+            {level: "medium", topic: "It's time", q: "Pilihlah bagian yang salah:", sentence: "It (A) is (B) high time (C) we (D) leave.", options: ["It", "is", "we", "leave"], correct: 3, exp: "It's time + Past Simple: 'we left'."},
+            {level: "hard", topic: "As if", q: "Pilihlah bagian yang salah:", sentence: "He (A) talks (B) as (C) if (D) he was the boss.", options: ["He", "talks", "as if", "was"], correct: 3, exp: "As if + Past Simple (unreal): 'he were'."},
+
+            // 81-90: INVERSION & EMPHATIC
+            {level: "hard", topic: "Negative Inversion", q: "Pilihlah bagian yang salah:", sentence: "Never (A) I (B) have (C) seen (D) such beauty.", options: ["Never", "I", "have", "seen"], correct: 1, exp: "Inversion: 'have I seen'."},
+            {level: "hard", topic: "Negative Inversion", q: "Pilihlah bagian yang salah:", sentence: "Seldom (A) he (B) has (C) been (D) so happy.", options: ["Seldom", "he", "has", "been"], correct: 1, exp: "Inversion: 'has he been'."},
+            {level: "hard", topic: "No sooner", q: "Pilihlah bagian yang salah:", sentence: "No sooner (A) had (B) I (C) arrived (D) when it rained.", options: ["No sooner", "had", "arrived", "when"], correct: 3, exp: "No sooner...than. Bukan 'when'."},
+            {level: "hard", topic: "Hardly", q: "Pilihlah bagian yang salah:", sentence: "Hardly (A) had (B) I (C) started (D) than it rained.", options: ["Hardly", "had", "started", "than"], correct: 3, exp: "Hardly...when. Bukan 'than'."},
+            {level: "hard", topic: "Under no circumstances", q: "Pilihlah bagian yang salah:", sentence: "Under (A) no (B) circumstances (C) he (D) will agree.", options: ["Under", "no", "he", "will"], correct: 2, exp: "Inversion: 'will he agree'."},
+            {level: "hard", topic: "Only after", q: "Pilihlah bagian yang salah:", sentence: "Only (A) after (B) he (C) left (D) I realized.", options: ["Only", "after", "left", "I"], correct: 3, exp: "Inversion: 'did I realize'."},
+            {level: "hard", topic: "Not until", q: "Pilihlah bagian yang salah:", sentence: "Not until (A) he (B) left (C) I (D) understood.", options: ["Not until", "he", "I", "understood"], correct: 2, exp: "Inversion: 'did I understand'."},
+            {level: "hard", topic: "So...that", q: "Pilihlah bagian yang salah:", sentence: "So (A) beautiful (B) was (C) she (D) as everyone looked.", options: ["So", "beautiful", "was", "as"], correct: 3, exp: "So...that. Bukan 'as'."},
+            {level: "hard", topic: "Such...that", q: "Pilihlah bagian yang salah:", sentence: "Such (A) was (B) his (C) anger (D) which nobody spoke.", options: ["Such", "was", "anger", "which"], correct: 3, exp: "Such...that. Bukan 'which'."},
+            {level: "hard", topic: "Little", q: "Pilihlah bagian yang salah:", sentence: "Little (A) did (B) he (C) know (D) what happened.", options: ["Little", "did", "know", "happened"], correct: 0, exp: "Sebenarnya benar: Little did he know. Jika salah: 'Little he did know' → 'Little did he know'."},
+
+            // 91-100: AGREEMENT & SPECIAL STRUCTURES
+            {level: "medium", topic: "Subject-Verb Agreement", q: "Pilihlah bagian yang salah:", sentence: "The (A) number (B) of (C) students (D) are increasing.", options: ["The", "number", "students", "are"], correct: 3, exp: "'The number of' + singular verb: 'is'."},
+            {level: "medium", topic: "Subject-Verb Agreement", q: "Pilihlah bagian yang salah:", sentence: "A (A) number (B) of (C) students (D) is absent.", options: ["A", "number", "students", "is"], correct: 3, exp: "'A number of' + plural verb: 'are'."},
+            {level: "medium", topic: "Subject-Verb Agreement", q: "Pilihlah bagian yang salah:", sentence: "Neither (A) the teacher (B) nor (C) the students (D) was ready.", options: ["Neither", "teacher", "students", "was"], correct: 3, exp: "Proximity rule: 'students' plural → 'were'."},
+            {level: "medium", topic: "Subject-Verb Agreement", q: "Pilihlah bagian yang salah:", sentence: "Every (A) boy (B) and (C) girl (D) have a book.", options: ["Every", "boy", "girl", "have"], correct: 3, exp: "'Every...and every...' singular: 'has'."},
+            {level: "medium", topic: "Subject-Verb Agreement", q: "Pilihlah bagian yang salah:", sentence: "The (A) team (B) are (C) playing (D) well.", options: ["The", "team", "are", "playing"], correct: 2, exp: "Collective noun (AmE): 'is'."},
+            {level: "medium", topic: "There is/are", q: "Pilihlah bagian yang salah:", sentence: "There (A) is (B) many (C) books (D) on the table.", options: ["There", "is", "many", "books"], correct: 1, exp: "'Many books' plural: 'are'."},
+            {level: "medium", topic: "One of", q: "Pilihlah bagian yang salah:", sentence: "One (A) of (B) the boy (C) is (D) missing.", options: ["One", "of", "boy", "is"], correct: 2, exp: "'One of' + plural noun: 'boys'."},
+            {level: "medium", topic: "The majority", q: "Pilihlah bagian yang salah:", sentence: "The (A) majority (B) of (C) people (D) believes this.", options: ["The", "majority", "people", "believes"], correct: 3, exp: "'Majority of people' plural: 'believe'."},
+            {level: "medium", topic: "Together with", q: "Pilihlah bagian yang salah:", sentence: "The (A) teacher (B) together with (C) students (D) are here.", options: ["The", "teacher", "students", "are"], correct: 3, exp: "Subject 'teacher' singular: 'is'."},
+            {level: "hard", topic: "Not only...but also", q: "Pilihlah bagian yang salah:", sentence: "Not only (A) he (B) passed (C) but also (D) got an A.", options: ["Not only", "he", "passed", "but"], correct: 1, exp: "Inversion: 'did he pass'."}
         ];
 
         let currentQ = 0;
         let score = 0;
+        let answered = false;
 
-        // FUNGSI MULAI KUIS LANGSUNG
         function startQuiz() {
             document.getElementById('startScreen').classList.add('hidden');
             document.getElementById('quizScreen').classList.remove('hidden');
-            loadQuestion();
+            showQuestion();
         }
 
-        // FUNGSI LOAD QUESTION, CHECK ANSWER, DAN LAINNYA TETAP SAMA
-        function loadQuestion() {
+        function showQuestion() {
+            answered = false;
             const q = questions[currentQ];
-            document.getElementById('qNumber').innerText = `Soal ${currentQ + 1}/${questions.length}`;
-            document.getElementById('progress').style.width = `${((currentQ) / questions.length) * 100}%`;
-            document.getElementById('qText').innerText = q.t;
             
-            const optionsDiv = document.getElementById('options');
-            optionsDiv.innerHTML = '';
+            const pct = ((currentQ + 1) / questions.length) * 100;
+            document.getElementById('progressBar').style.width = pct + '%';
+            document.getElementById('currentNum').textContent = currentQ + 1;
             
-            q.o.forEach((opt, idx) => {
-                const btn = document.createElement('div');
-                btn.className = 'option';
-                btn.innerText = opt;
-                btn.onclick = () => checkAnswer(idx);
-                optionsDiv.appendChild(btn);
+            const badge = document.getElementById('diffBadge');
+            badge.textContent = q.level.toUpperCase();
+            badge.className = 'difficulty-badge badge-' + q.level;
+            
+            document.getElementById('topicTag').textContent = q.topic.toUpperCase();
+            document.getElementById('qText').textContent = q.q;
+            document.getElementById('qSentence').innerHTML = highlight(q.sentence);
+            
+            const container = document.getElementById('optionsBox');
+            container.innerHTML = '';
+            
+            q.options.forEach((opt, idx) => {
+                const btn = document.createElement('button');
+                btn.className = 'option-btn';
+                btn.innerHTML = `<span class="option-label">${String.fromCharCode(65+idx)}</span>${opt}`;
+                btn.onclick = () => selectAnswer(idx);
+                container.appendChild(btn);
+            });
+            
+            document.getElementById('expCard').style.display = 'none';
+            document.getElementById('nextBtn').style.display = 'none';
+        }
+
+        function highlight(sentence) {
+            return sentence.replace(/\(([A-D])\)/g, '<strong style="color:#d32f2f;">($1)</strong>');
+        }
+
+        function selectAnswer(idx) {
+            if (answered) return;
+            answered = true;
+            
+            const q = questions[currentQ];
+            const btns = document.querySelectorAll('.option-btn');
+            
+            if (idx === q.correct) {
+                btns[idx].classList.add('selected-correct');
+                score++;
+                triggerConfetti();
+            } else {
+                btns[idx].classList.add('selected-wrong');
+                btns[q.correct].classList.add('correct-answer');
+            }
+            
+            btns.forEach(b => b.disabled = true);
+            
+            document.getElementById('expText').textContent = q.exp;
+            document.getElementById('expCard').style.display = 'block';
+            document.getElementById('nextBtn').style.display = 'block';
+        }
+
+        function triggerConfetti() {
+            const colors = ['#1e88e5', '#d32f2f', '#4caf50', '#ff9800', '#9c27b0'];
+            
+            confetti({
+                particleCount: 120,
+                spread: 80,
+                origin: { y: 0.6 },
+                colors: colors,
+                disableForReducedMotion: true,
+                ticks: 100
             });
         }
 
-        function checkAnswer(idx) {
-            const q = questions[currentQ];
-            const options = document.querySelectorAll('.option');
-            
-            if (idx === q.c) {
-                options[idx].classList.add('correct');
-                score++;
-                confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
+        function nextQuestion() {
+            currentQ++;
+            if (currentQ < questions.length) {
+                showQuestion();
             } else {
-                options[idx].classList.add('wrong');
-                options[q.c].classList.add('correct');
+                showResult();
             }
-
-            // Tunggu sebentar lalu lanjut soal berikutnya
-            setTimeout(() => {
-                currentQ++;
-                if (currentQ < questions.length) {
-                    loadQuestion();
-                } else {
-                    showEnd();
-                }
-            }, 1500);
         }
 
-        // ... Sisa fungsi JavaScript lainnya ...
-        function showEnd() {
+        function showResult() {
             document.getElementById('quizScreen').classList.add('hidden');
             document.getElementById('endScreen').classList.remove('hidden');
-            // Logika perhitungan skor akhir Anda
+            
+            const percentage = Math.round((score / questions.length) * 100);
+            document.getElementById('scoreNum').textContent = score;
+            document.getElementById('correctCount').textContent = score;
+            document.getElementById('wrongCount').textContent = questions.length - score;
+            document.getElementById('accuracy').textContent = percentage + '%';
+            
+            setTimeout(() => {
+                const circle = document.getElementById('scoreCircle');
+                const circumference = 2 * Math.PI * 90;
+                const offset = circumference - (percentage / 100) * circumference;
+                circle.style.strokeDashoffset = offset;
+            }, 300);
+            
+            const levelData = calculateLevel(percentage);
+            const badge = document.getElementById('levelBadge');
+            badge.textContent = levelData.name;
+            badge.className = 'level-badge level-' + levelData.class;
+            document.getElementById('levelDesc').textContent = levelData.desc;
+            document.getElementById('levelText').textContent = levelData.name;
+            
+            if (percentage >= 80) {
+                setTimeout(() => triggerConfetti(), 500);
+                setTimeout(() => triggerConfetti(), 1500);
+            }
+        }
+
+        function calculateLevel(pct) {
+            if (pct >= 95) return {
+                name: 'EXPERT', 
+                class: 'expert', 
+                desc: '🌟 PHENOMENAL! Grammar-mu sudah NATIVE-LEVEL! Kamu menguasai seluruh aspek bahasa Inggris termasuk Subjunctive, Inversion, dan Advanced Structures dengan sempurna! Siap mengajar grammar!'
+            };
+            if (pct >= 85) return {
+                name: 'ADVANCED', 
+                class: 'advanced', 
+                desc: '👏 OUTSTANDING! Kamu menguasai complex grammar dengan sangat baik! Hampir tidak ada celah, tinggal maintenance saja. Level ini sangat cocok untuk academic/professional purposes!'
+            };
+            if (pct >= 75) return {
+                name: 'UPPER-INTERMEDIATE', 
+                class: 'upper', 
+                desc: '💪 VERY GOOD! Kamu sudah paham Conditional, Reported Speech, dan Passive dengan baik. Fokus latihan pada Subjunctive dan Inversion untuk naik ke level berikutnya!'
+            };
+            if (pct >= 60) return {
+                name: 'INTERMEDIATE', 
+                class: 'intermediate', 
+                desc: '👍 GOOD! Dasar grammar sudah kuat. Kamu paham Tenses dan Modal dengan baik. Tingkatkan lagi di bagian Passive Voice dan Conditional Sentences ya!'
+            };
+            if (pct >= 45) return {
+                name: 'ELEMENTARY', 
+                class: 'elementary', 
+                desc: '📚 NOT BAD! Kamu perlu latihan lebih intensif di basic grammar seperti Subject-Verb Agreement dan Tenses. Jangan menyerah, konsisten latihannya!'
+            };
+            return {
+                name: 'BEGINNER', 
+                class: 'beginner', 
+                desc: '💡 KEEP LEARNING! Mulai dari dasar Subject-Verb Agreement dan Simple Present/Past Tense. Setiap expert pernah jadi beginner. Semangat!'
+            };
+        }
+
+        function restartQuiz() {
+            currentQ = 0;
+            score = 0;
+            document.getElementById('endScreen').classList.add('hidden');
+            document.getElementById('startScreen').classList.remove('hidden');
+            document.getElementById('scoreCircle').style.strokeDashoffset = 565.48;
         }
     </script>
 </body>
